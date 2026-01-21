@@ -13,8 +13,6 @@ This MCP server solves that by giving AI models direct access to search and retr
 
 ## Quick Setup
 
-### 1. Install the MCP Server
-
 ```bash
 npx better-icons setup
 ```
@@ -24,36 +22,23 @@ This will interactively configure the MCP server for:
 - **Claude Desktop**
 - **VS Code (Copilot)**
 - **Windsurf**
+- **OpenCode**
+- **Cline / Roo**
+- **Aider**
 
-### 2. Add AI Rules to Your Project
+## Add AI Skills (Optional)
 
-Teach your AI assistant how to properly use better-icons:
+Teach your AI assistant best practices for using better-icons:
 
 ```bash
 npx skills add better-auth/better-icons
 ```
 
-Or install rules directly (supports multiple editors):
-
-```bash
-npx better-icons rules
-```
-
-This opens an interactive selector for:
-- **Cursor**
-- **Claude Code**
-- **Windsurf**
-- **OpenCode**
-- **GitHub Copilot**
-- **Cline / Roo**
-- **Aider**
-
-The rules ensure AI assistants will:
+This ensures AI assistants will:
 - ✅ Use the `better-icons` MCP instead of installing icon packages
-- ✅ Create a single `icons.tsx` file with all icons
+- ✅ For React, create a single `icons.tsx` file with all icons
 - ✅ Reuse existing icons before adding new ones
 - ✅ Follow consistent naming conventions
-- ❌ Never install `lucide-react`, `react-icons`, `@heroicons/react`, etc.
 
 ## Manual Installation
 
@@ -166,12 +151,19 @@ Recommend icons for user authentication
 ## CLI Commands
 
 ```bash
-npx better-icons          # Run the MCP server
-npx better-icons setup    # Interactive setup wizard
-npx better-icons rules    # Install AI rules to your project
-npx better-icons config   # Show manual config instructions
-npx better-icons help     # Show help
+npx better-icons              # Run the MCP server (for tool configs)
+npx better-icons setup        # Interactive setup wizard
+npx better-icons setup -y     # Setup with auto-confirm
+npx better-icons config       # Show manual config instructions
+npx better-icons --help       # Show help
 ```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `-y, --yes` | Skip confirmation prompts |
+| `-a, --agent <agents...>` | Specify agents (cursor, claude-code, windsurf, vscode, opencode, cline, aider) |
 
 ## Development
 
@@ -180,9 +172,9 @@ npx better-icons help     # Show help
 bun install
 
 # Run locally
-bun run index.ts
+bun run dev
 
-# Build for publishing
+# Build
 bun run build
 ```
 
