@@ -15,7 +15,13 @@ import {
   loadPreferences,
   clearPreferences,
   getRecentIcons,
+  type IconFramework,
 } from "./memory.js";
+import {
+  addIconToFile,
+  parseExistingIcons,
+  getImportStatement,
+} from "./project-sync.js";
 
 interface IconifySearchResult {
   icons: string[];
@@ -451,6 +457,112 @@ export async function runServer(): Promise<void> {
         content: [{
           type: "text" as const,
           text: `# Recent Icons\n\n${list}\n\nUse \`get_icon\` or \`get_icons\` to retrieve any of these again.`,
+        }],
+      };
+    }
+  );
+
+  // ============================================
+  // Project Icon Sync Tools
+  // ============================================
+
+  // Tool: Scan Project Icons
+  server.registerTool(
+    "scan_project_icons",
+    {
+      description: "Scan an icons file to see what icons are already available. Helps avoid duplicates.",
+      inputSchema: {
+        icons_file: z.string().describe("Absolute path to the icons file (e.g., '/Users/me/myapp/src/components/icons.tsx')"),
+      },
+    },
+    async ({ icons_file }) => {
+      const existingIcons = parseExistingIcons(icons_file);
+      
+      if (existingIcons.size === 0) {
+        return {
+          content: [{
+            type: "text" as const,
+            text: `# Project Icons\n\n**File:** ${icons_file}\n\nNo icons found in file yet (or file doesn't exist). Use \`sync_icon\` to add your first icon.`,
+          }],
+        };
+      }
+
+      const list = Array.from(existingIcons.entries())
+        .map(([iconId, componentName]) => `- \`${componentName}\` ← ${iconId}`)
+        .join("\n");
+
+      return {
+        content: [{
+          type: "text" as const,
+          text: `# Project Icons\n\n**File:** ${icons_file}\n**Total:** ${existingIcons.size} icons\n\n${list}\n\nUse these component names directly in your code, or use \`sync_icon\` to add more.`,
+        }],
+      };
+    }
+  );
+
+  // Tool: Sync Icon to Project
+  server.registerTool(
+    "sync_icon",
+    {
+      description: "Get an icon AND automatically add it to your project's icons file. Returns the import statement to use. This is the recommended way to add icons to your project. The AI should provide the icons file path based on the project structure.",
+      inputSchema: {
+        icons_file: z.string().describe("Absolute path to the icons file (e.g., '/Users/me/myapp/src/components/icons.tsx')"),
+        framework: z.enum(["react", "vue", "svelte", "solid", "svg"]).describe("Framework for icon components"),
+        icon_id: z.string().describe("Icon identifier in format 'prefix:name' (e.g., 'lucide:home')"),
+        component_name: z.string().optional().describe("Custom component name (optional - auto-generated from icon name if not provided)"),
+        color: z.string().optional().describe("Icon color (e.g., 'currentColor')"),
+        size: z.number().optional().describe("Icon size in pixels"),
+      },
+    },
+    async ({ icons_file, framework, icon_id, component_name, color, size }) => {
+      // Get the icon from Iconify
+      const [prefix, name] = icon_id.split(":");
+      if (!prefix || !name) {
+        return { content: [{ type: "text" as const, text: "Invalid icon ID. Use 'prefix:name' format." }], isError: true };
+      }
+
+      const dataResponse = await fetch(`${ICONIFY_API}/${prefix}.json?icons=${name}`);
+      if (!dataResponse.ok) {
+        return { content: [{ type: "text" as const, text: `Error fetching icon: ${dataResponse.statusText}` }], isError: true };
+      }
+
+      const iconSet = (await dataResponse.json()) as IconSet;
+      const resolvedName = resolveIconAlias(iconSet, name);
+      
+      const iconData = iconSet.icons?.[resolvedName];
+      if (!iconData) {
+        return { content: [{ type: "text" as const, text: `Icon '${icon_id}' not found` }], isError: true };
+      }
+
+      const svg = buildSvg(iconData, { width: iconSet.width, height: iconSet.height }, { size, color });
+      
+      // Add to project file
+      const result = addIconToFile(
+        icons_file,
+        icon_id,
+        svg,
+        framework as IconFramework,
+        component_name
+      );
+
+      // Track usage
+      trackUsage(prefix, icon_id);
+
+      const importStatement = getImportStatement(icons_file, result.componentName, framework as IconFramework);
+
+      if (result.alreadyExists) {
+        return {
+          content: [{
+            type: "text" as const,
+            text: `# Icon Already Exists\n\nThe icon \`${icon_id}\` is already in your icons file as **${result.componentName}**.\n\n## Import\n\n\`\`\`tsx\n${importStatement}\n\`\`\`\n\n## Usage\n\n\`\`\`tsx\n<${result.componentName} />\n\`\`\``,
+          }],
+        };
+      }
+
+      return {
+        content: [{
+          type: "text" as const,
+          text: `# Icon Added\n\n**Icon:** ${icon_id}\n**Component:** ${result.componentName}\n**File:** ${icons_file}\n\n## Import\n\n\`\`\`tsx\n${importStatement}\n\`\`\`\n\n## Usage\n\n\`\`\`tsx\n<${result.componentName} />\n\`\`\``,
         }],
       };
     }

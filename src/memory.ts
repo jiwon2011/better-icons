@@ -12,6 +12,8 @@ export interface IconHistoryEntry {
   timestamp: string;
 }
 
+export type IconFramework = "react" | "vue" | "svelte" | "solid" | "svg";
+
 export interface Preferences {
   collections: Record<string, CollectionUsage>;
   history: IconHistoryEntry[];

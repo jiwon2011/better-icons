@@ -20,6 +20,37 @@ Better Icons automatically learns which icon collections you prefer based on you
 - **Global memory**: Preferences are stored in `~/.better-icons/preferences.json` and apply across all projects
 - **Full control**: View preferences with `get_icon_preferences` or reset with `clear_icon_preferences`
 
+## Project Icon Sync
+
+Automatically sync icons to your project's icon file - no configuration needed.
+
+```
+You: "I need a settings icon"
+
+AI: Uses sync_icon → automatically:
+  ✓ Fetches the icon from Iconify
+  ✓ Adds SettingsIcon to your icons.tsx
+  ✓ Returns: import { SettingsIcon } from './icons'
+```
+
+The AI knows your project structure and passes the icons file path directly:
+
+```
+sync_icon(
+  icons_file: "/Users/me/myapp/src/components/icons.tsx",
+  framework: "react",
+  icon_id: "lucide:settings"
+)
+```
+
+### Supported frameworks
+
+- **React** - TSX components with proper props typing
+- **Vue** - Template-based components
+- **Svelte** - Svelte components with className prop
+- **Solid** - SolidJS components
+- **SVG** - Raw SVG string exports
+
 ## Quick Setup
 
 ```bash
@@ -200,6 +231,40 @@ What icons have I used recently?
 
 **Parameters:**
 - `limit` (optional): Number of recent icons to show (1-50, default: 20)
+
+### `sync_icon`
+
+Get an icon AND automatically add it to your project's icons file. The recommended way to add icons.
+
+```
+Sync the lucide:home icon to my project
+Add a settings icon to my icons file
+```
+
+**Parameters:**
+- `icons_file` (required): Absolute path to the icons file
+- `framework` (required): 'react', 'vue', 'svelte', 'solid', or 'svg'
+- `icon_id` (required): Icon ID in format 'prefix:name'
+- `component_name` (optional): Custom component name
+- `color` (optional): Icon color
+- `size` (optional): Icon size in pixels
+
+**Returns:**
+- Confirmation that icon was added (or already exists)
+- Import statement to use
+- Usage example
+
+### `scan_project_icons`
+
+Scan an icons file to see what icons are already available.
+
+```
+What icons are already in my project?
+Scan my icons file
+```
+
+**Parameters:**
+- `icons_file` (required): Absolute path to the icons file
 
 ## Popular Icon Collections
 

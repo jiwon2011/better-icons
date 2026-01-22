@@ -13,14 +13,14 @@ const LOGO = `
   ${chalk.bold.white("██████╔╝███████╗   ██║      ██║   ███████╗██║  ██║")}
   ${chalk.bold.white("╚═════╝ ╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝")}
 
-  ${chalk.bold.yellow("██╗ ██████╗ ██████╗ ███╗   ██╗███████╗")}
-  ${chalk.bold.yellow("██║██╔════╝██╔═══██╗████╗  ██║██╔════╝")}
-  ${chalk.bold.yellow("██║██║     ██║   ██║██╔██╗ ██║███████╗")}
-  ${chalk.bold.yellow("██║██║     ██║   ██║██║╚██╗██║╚════██║")}
-  ${chalk.bold.yellow("██║╚██████╗╚██████╔╝██║ ╚████║███████║")}
-  ${chalk.bold.yellow("╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝")}
+  ${chalk.bold.white("██╗ ██████╗ ██████╗ ███╗   ██╗███████╗")}
+  ${chalk.bold.white("██║██╔════╝██╔═══██╗████╗  ██║██╔════╝")}
+  ${chalk.bold.white("██║██║     ██║   ██║██╔██╗ ██║███████╗")}
+  ${chalk.bold.white("██║██║     ██║   ██║██║╚██╗██║╚════██║")}
+  ${chalk.bold.white("██║╚██████╗╚██████╔╝██║ ╚████║███████║")}
+  ${chalk.bold.white("╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝")}
 
-  ${chalk.dim("200,000+ icons from 150+ icon sets via Iconify")}
+  ${chalk.dim("200,000+ icons from 150+ icon libraries")}
 `;
 
 interface SetupOptions {
