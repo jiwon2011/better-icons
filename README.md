@@ -26,7 +26,7 @@ Icons are a common pain point in AI-assisted coding. Models often struggle to kn
 
 - **200,000+ Icons** - Search across 150+ icon collections (Lucide, Heroicons, Material Design, etc.)
 - **Auto-Learning** - Remembers which icon collections you use and prioritizes them in future searches
-- **Project Sync** - Icons are written directly to your `icons.tsx` file instead of pasting SVG into chat (saves tokens!)
+- **Project Sync** - Icons are written directly to your icons file (`.tsx`, `.ts`, `.js`) instead of pasting SVG into chat (saves tokens!)
 - **Batch Retrieval** - Get multiple icons at once
 - **Similar Icons** - Find the same icon across different collections and styles
 - **Recent Icons** - Quick access to icons you've used before
