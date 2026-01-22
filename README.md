@@ -1,6 +1,6 @@
 # Better Icons
 
-An MCP (Model Context Protocol) server for searching and retrieving icons from 200+ icon libraries powered by [Iconify](https://iconify.design/) - the same data source behind [icones.js.org](https://icones.js.org).
+An MCP (Model Context Protocol) server for searching and retrieving 200,000 icons from 150+ icon sets, powered by [Iconify](https://iconify.design/) - the same data source behind [icones.js.org](https://icones.js.org).
 
 ## Why?
 
@@ -10,6 +10,15 @@ When doing AI-assisted coding, icons are often a pain point. AI models struggle 
 - Suggest appropriate icons for UI elements
 
 This MCP server solves that by giving AI models direct access to search and retrieve icons from the massive Iconify collection (200,000+ icons!).
+
+## Auto-Learning Preferences
+
+Better Icons automatically learns which icon collections you prefer based on your usage. When you retrieve icons using `get_icon`, the server tracks which collections you use most frequently and prioritizes them in future searches and recommendations.
+
+- **Consistent style**: Icons from your preferred collections appear first in search results
+- **Zero configuration**: Just use the server normally and it learns your preferences
+- **Global memory**: Preferences are stored in `~/.better-icons/preferences.json` and apply across all projects
+- **Full control**: View preferences with `get_icon_preferences` or reset with `clear_icon_preferences`
 
 ## Quick Setup
 
@@ -93,6 +102,7 @@ Get the SVG code for a specific icon with multiple usage formats.
 
 ```
 Get the SVG for mdi:home
+Get a URL for mdi:home
 Get lucide:arrow-right with size 24
 ```
 
@@ -100,11 +110,13 @@ Get lucide:arrow-right with size 24
 - `icon_id` (required): Icon ID in format 'prefix:name' (e.g., 'mdi:home')
 - `color` (optional): Icon color (e.g., '#ff0000', 'currentColor')
 - `size` (optional): Icon size in pixels
+- `format` (optional): 'svg' (default) or 'url'
 
 **Returns:**
 - Raw SVG code
 - React/JSX component code
 - Iconify component usage
+- Direct SVG URL (when `format: "url"`)
 
 ### `list_collections`
 
@@ -132,6 +144,24 @@ Recommend icons for user authentication
 - `use_case` (required): Describe what you need
 - `style` (optional): 'solid', 'outline', or 'any'
 - `limit` (optional): Number of recommendations (1-20)
+
+### `get_icon_preferences`
+
+View your learned icon collection preferences with usage statistics.
+
+```
+Show my icon preferences
+What icon collections do I use most?
+```
+
+### `clear_icon_preferences`
+
+Reset all learned icon preferences to start fresh.
+
+```
+Clear my icon preferences
+Reset icon preferences
+```
 
 ## Popular Icon Collections
 

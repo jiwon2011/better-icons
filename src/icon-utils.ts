@@ -42,18 +42,51 @@ export function buildSvg(
 
 export function sortByPreferredCollections(
   icons: string[], 
-  style: "solid" | "outline" | "any"
+  style: "solid" | "outline" | "any",
+  learnedPreferences: string[] = []
 ): string[] {
-  const preferred = style === "solid" 
+  const stylePreferred = style === "solid" 
     ? ["mdi", "fa-solid"] 
     : style === "outline" 
       ? ["lucide", "tabler", "ph"] 
       : ["lucide", "mdi", "heroicons"];
   
+  // Learned preferences take priority, then style-based defaults
+  const preferred = [...new Set([...learnedPreferences, ...stylePreferred])];
+  
   return [...icons].sort((a, b) => {
-    const pA = preferred.indexOf(a.split(":")[0]!);
-    const pB = preferred.indexOf(b.split(":")[0]!);
+    const prefixA = a.split(":")[0]!;
+    const prefixB = b.split(":")[0]!;
+    const pA = preferred.indexOf(prefixA);
+    const pB = preferred.indexOf(prefixB);
+    
+    // Both in preferred list - sort by preference order
+    if (pA >= 0 && pB >= 0) return pA - pB;
+    // Only A in preferred list
     if (pA >= 0 && pB < 0) return -1;
+    // Only B in preferred list
+    if (pB >= 0 && pA < 0) return 1;
+    return 0;
+  });
+}
+
+export function sortByLearnedPreferences(
+  icons: string[],
+  learnedPreferences: string[]
+): string[] {
+  if (learnedPreferences.length === 0) return icons;
+  
+  return [...icons].sort((a, b) => {
+    const prefixA = a.split(":")[0]!;
+    const prefixB = b.split(":")[0]!;
+    const pA = learnedPreferences.indexOf(prefixA);
+    const pB = learnedPreferences.indexOf(prefixB);
+    
+    // Both in preferred list - sort by preference order
+    if (pA >= 0 && pB >= 0) return pA - pB;
+    // Only A in preferred list
+    if (pA >= 0 && pB < 0) return -1;
+    // Only B in preferred list
     if (pB >= 0 && pA < 0) return 1;
     return 0;
   });

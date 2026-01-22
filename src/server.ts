@@ -6,8 +6,15 @@ import {
   resolveIconAlias, 
   buildSvg, 
   sortByPreferredCollections,
+  sortByLearnedPreferences,
   type IconSet 
 } from "./icon-utils.js";
+import {
+  trackUsage,
+  getPreferredCollections,
+  loadPreferences,
+  clearPreferences,
+} from "./memory.js";
 
 interface IconifySearchResult {
   icons: string[];
@@ -57,15 +64,24 @@ export async function runServer(): Promise<void> {
       }
 
       const data = (await response.json()) as IconifySearchResult;
-      const iconList = data.icons.map((icon) => {
+      
+      // Sort by learned preferences (most used collections first)
+      const learnedPrefs = getPreferredCollections();
+      const sortedIcons = sortByLearnedPreferences(data.icons, learnedPrefs);
+      
+      const iconList = sortedIcons.map((icon) => {
         const [prefix, name] = icon.split(":");
         return { id: icon, prefix, name };
       });
 
+      const prefNote = learnedPrefs.length > 0 
+        ? `\n\n_Results prioritized from your frequently used collections: ${learnedPrefs.slice(0, 3).join(", ")}_`
+        : "";
+
       return {
         content: [{
           type: "text" as const,
-          text: `Found ${data.total} icons (showing ${iconList.length})\n\n**Icons:**\n${iconList.map((i) => `- \`${i.id}\``).join("\n")}\n\nUse \`get_icon\` with any icon ID to get the SVG code.`,
+          text: `Found ${data.total} icons (showing ${iconList.length})\n\n**Icons:**\n${iconList.map((i) => `- \`${i.id}\``).join("\n")}\n\nUse \`get_icon\` with any icon ID to get the SVG code.${prefNote}`,
         }],
       };
     }
@@ -104,6 +120,9 @@ export async function runServer(): Promise<void> {
       const svg = buildSvg(iconData, { width: iconSet.width, height: iconSet.height }, { size, color });
       const width = iconData.width || iconSet.width || 24;
       const height = iconData.height || iconSet.height || 24;
+
+      // Track usage for auto-learning preferences
+      trackUsage(prefix);
 
       return {
         content: [{
@@ -169,12 +188,69 @@ export async function runServer(): Promise<void> {
       }
 
       const data = (await response.json()) as IconifySearchResult;
-      const sorted = sortByPreferredCollections(data.icons, style).slice(0, limit);
+      const learnedPrefs = getPreferredCollections();
+      const sorted = sortByPreferredCollections(data.icons, style, learnedPrefs).slice(0, limit);
+
+      const prefNote = learnedPrefs.length > 0 
+        ? `\n\n_Prioritized from your frequently used collections: ${learnedPrefs.slice(0, 3).join(", ")}_`
+        : "";
 
       return {
         content: [{
           type: "text" as const,
-          text: `# Recommendations for "${use_case}"\n\n${sorted.map((i) => `- \`${i}\``).join("\n")}\n\nUse \`get_icon\` to get SVG code.`,
+          text: `# Recommendations for "${use_case}"\n\n${sorted.map((i) => `- \`${i}\``).join("\n")}\n\nUse \`get_icon\` to get SVG code.${prefNote}`,
+        }],
+      };
+    }
+  );
+
+  // Tool: Get Preferences
+  server.registerTool(
+    "get_icon_preferences",
+    {
+      description: "View your learned icon collection preferences. The server automatically learns which icon collections you use most frequently.",
+      inputSchema: {},
+    },
+    async () => {
+      const prefs = loadPreferences();
+      const collections = Object.entries(prefs.collections)
+        .sort((a, b) => b[1].count - a[1].count);
+
+      if (collections.length === 0) {
+        return {
+          content: [{
+            type: "text" as const,
+            text: "No icon preferences learned yet. Use `get_icon` to retrieve icons and the server will automatically learn your preferences.",
+          }],
+        };
+      }
+
+      const list = collections.map(([prefix, usage]) => 
+        `- **${prefix}**: ${usage.count} uses (last: ${new Date(usage.lastUsed).toLocaleDateString()})`
+      ).join("\n");
+
+      return {
+        content: [{
+          type: "text" as const,
+          text: `# Your Icon Preferences\n\nThe server has learned these collection preferences based on your usage:\n\n${list}\n\nSearch results and recommendations will prioritize icons from these collections.`,
+        }],
+      };
+    }
+  );
+
+  // Tool: Clear Preferences
+  server.registerTool(
+    "clear_icon_preferences",
+    {
+      description: "Reset all learned icon preferences. Use this if you want to start fresh with a different icon style.",
+      inputSchema: {},
+    },
+    async () => {
+      clearPreferences();
+      return {
+        content: [{
+          type: "text" as const,
+          text: "Icon preferences have been cleared. The server will start learning your preferences again from scratch.",
         }],
       };
     }

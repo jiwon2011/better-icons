@@ -20,7 +20,7 @@ const LOGO = `
   ${chalk.bold.yellow("██║╚██████╗╚██████╔╝██║ ╚████║███████║")}
   ${chalk.bold.yellow("╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝")}
 
-  ${chalk.dim("500,000+ icons from 200+ collections via Iconify")}
+  ${chalk.dim("200,000+ icons from 150+ icon sets via Iconify")}
 `;
 
 interface SetupOptions {
