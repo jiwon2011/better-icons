@@ -163,6 +163,44 @@ Clear my icon preferences
 Reset icon preferences
 ```
 
+### `find_similar_icons`
+
+Find similar icons or variations of a given icon across different collections and styles.
+
+```
+Find icons similar to lucide:home
+What other arrow icons are there like mdi:arrow-right?
+```
+
+**Parameters:**
+- `icon_id` (required): Icon ID to find variations of
+- `limit` (optional): Maximum number of similar icons (1-50, default: 10)
+
+### `get_icons`
+
+Get multiple icons at once (batch retrieval). More efficient than multiple `get_icon` calls.
+
+```
+Get these icons: lucide:home, lucide:settings, lucide:user
+```
+
+**Parameters:**
+- `icon_ids` (required): Array of icon IDs (max 20)
+- `color` (optional): Color for all icons
+- `size` (optional): Size in pixels for all icons
+
+### `get_recent_icons`
+
+View your recently used icons for quick reuse.
+
+```
+Show my recent icons
+What icons have I used recently?
+```
+
+**Parameters:**
+- `limit` (optional): Number of recent icons to show (1-50, default: 20)
+
 ## Popular Icon Collections
 
 | Prefix | Name | Style | Icons |

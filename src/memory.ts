@@ -58,14 +58,25 @@ export function savePreferences(prefs: Preferences): void {
   writeFileSync(path, JSON.stringify(prefs, null, 2), "utf-8");
 }
 
-export function trackUsage(collectionPrefix: string): void {
+export function trackUsage(collectionPrefix: string, iconId?: string): void {
   const prefs = loadPreferences();
   const existing = prefs.collections[collectionPrefix];
+  const now = new Date().toISOString();
   
   prefs.collections[collectionPrefix] = {
     count: (existing?.count || 0) + 1,
-    lastUsed: new Date().toISOString(),
+    lastUsed: now,
   };
+  
+  // Track in history if full icon ID is provided
+  if (iconId) {
+    // Remove if already exists (to move to top)
+    prefs.history = prefs.history.filter(h => h.iconId !== iconId);
+    // Add to beginning
+    prefs.history.unshift({ iconId, timestamp: now });
+    // Keep only MAX_HISTORY_SIZE entries
+    prefs.history = prefs.history.slice(0, MAX_HISTORY_SIZE);
+  }
   
   savePreferences(prefs);
 }
@@ -78,6 +89,11 @@ export function getPreferredCollections(): string[] {
     .map(([prefix]) => prefix);
 }
 
+export function getRecentIcons(limit: number = 20): IconHistoryEntry[] {
+  const prefs = loadPreferences();
+  return prefs.history.slice(0, limit);
+}
+
 export function clearPreferences(): void {
-  savePreferences({ ...DEFAULT_PREFERENCES });
+  savePreferences({ ...DEFAULT_PREFERENCES, history: [] });
 }
