@@ -7,12 +7,21 @@ export interface CollectionUsage {
   lastUsed: string;
 }
 
+export interface IconHistoryEntry {
+  iconId: string;
+  timestamp: string;
+}
+
 export interface Preferences {
   collections: Record<string, CollectionUsage>;
+  history: IconHistoryEntry[];
 }
+
+const MAX_HISTORY_SIZE = 50;
 
 const DEFAULT_PREFERENCES: Preferences = {
   collections: {},
+  history: [],
 };
 
 export function getPreferencesPath(): string {
@@ -31,9 +40,10 @@ export function loadPreferences(): Preferences {
     const parsed = JSON.parse(content) as Preferences;
     return {
       collections: parsed.collections || {},
+      history: parsed.history || [],
     };
   } catch {
-    return { ...DEFAULT_PREFERENCES };
+    return { ...DEFAULT_PREFERENCES, history: [] };
   }
 }
 
