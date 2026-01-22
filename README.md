@@ -4,22 +4,12 @@ Search and retrieve 200,000+ icons from 150+ icon sets. Works as a CLI tool or M
 
 ## Quick Start
 
-### CLI (Direct Usage)
+### Skills
 
-Use the CLI to search and retrieve icons directly from your terminal.
+It uses the #[CLI](CLI (Direct Usage)) under the hood
 
 ```bash
-# Search for icons
-npx better-icons search arrow
-npx better-icons search home --prefix lucide --limit 10
-
-# Get icon SVG (outputs to stdout)
-npx better-icons get lucide:home > icon.svg
-npx better-icons get mdi:account --color '#333' --size 24
-
-# JSON output for scripting
-npx better-icons search settings --json | jq '.icons[:5]'
-npx better-icons get heroicons:check --json
+npx add-skill better-auth/better-icons
 ```
 
 ### MCP Server (AI Agents)
@@ -38,6 +28,24 @@ This interactively configures the MCP server for:
 - **VS Code (Copilot)**
 
 Or [configure manually](#manual-installation).
+
+### CLI (Direct Usage)
+
+Use the CLI to search and retrieve icons directly from your terminal.
+
+```bash
+# Search for icons
+npx better-icons search arrow
+npx better-icons search home --prefix lucide --limit 10
+
+# Get icon SVG (outputs to stdout)
+npx better-icons get lucide:home > icon.svg
+npx better-icons get mdi:account --color '#333' --size 24
+
+# JSON output for scripting
+npx better-icons search settings --json | jq '.icons[:5]'
+npx better-icons get heroicons:check --json
+```
 
 ## Why?
 
