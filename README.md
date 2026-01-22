@@ -1,57 +1,9 @@
 # Better Icons
 
-An MCP (Model Context Protocol) server for searching and retrieving 200,000 icons from 150+ icon sets, powered by [Iconify](https://iconify.design/) - the same data source behind [icones.js.org](https://icones.js.org).
+The MCP server for searching and retrieving 200,000 icons from 150+ icon sets.
 
-## Why?
 
-When doing AI-assisted coding, icons are often a pain point. AI models struggle to:
-- Know what icons are available
-- Provide correct SVG code
-- Suggest appropriate icons for UI elements
-
-This MCP server solves that by giving AI models direct access to search and retrieve icons from the massive Iconify collection (200,000+ icons!).
-
-## Auto-Learning Preferences
-
-Better Icons automatically learns which icon collections you prefer based on your usage. When you retrieve icons using `get_icon`, the server tracks which collections you use most frequently and prioritizes them in future searches and recommendations.
-
-- **Consistent style**: Icons from your preferred collections appear first in search results
-- **Zero configuration**: Just use the server normally and it learns your preferences
-- **Global memory**: Preferences are stored in `~/.better-icons/preferences.json` and apply across all projects
-- **Full control**: View preferences with `get_icon_preferences` or reset with `clear_icon_preferences`
-
-## Project Icon Sync
-
-Automatically sync icons to your project's icon file - no configuration needed.
-
-```
-You: "I need a settings icon"
-
-AI: Uses sync_icon → automatically:
-  ✓ Fetches the icon from Iconify
-  ✓ Adds SettingsIcon to your icons.tsx
-  ✓ Returns: import { SettingsIcon } from './icons'
-```
-
-The AI knows your project structure and passes the icons file path directly:
-
-```
-sync_icon(
-  icons_file: "/Users/me/myapp/src/components/icons.tsx",
-  framework: "react",
-  icon_id: "lucide:settings"
-)
-```
-
-### Supported frameworks
-
-- **React** - TSX components with proper props typing
-- **Vue** - Template-based components
-- **Svelte** - Svelte components with className prop
-- **Solid** - SolidJS components
-- **SVG** - Raw SVG string exports
-
-## Quick Setup
+## Get Started
 
 ```bash
 npx better-icons setup
@@ -64,19 +16,21 @@ This will interactively configure the MCP server for:
 - **Windsurf**
 - **VS Code (Copilot)**
 
-## Add AI Skills (Optional)
+Or [configure manually](#manual-installation).
 
-Teach your AI assistant best practices for using better-icons:
+## Why?
 
-```bash
-npx skills add better-auth/better-icons
-```
+Icons are a common pain point in AI-assisted coding. Models often struggle to know which icons are available, generate correct SVG code, maintain consistent styles, and organize icons properly. Inline SVGs also consume unnecessary tokens.
 
-This ensures AI assistants will:
-- ✅ Use the `better-icons` MCP instead of installing icon packages
-- ✅ For React, create a single `icons.tsx` file with all icons
-- ✅ Reuse existing icons before adding new ones
-- ✅ Follow consistent naming conventions
+## Features
+
+- **200,000+ Icons** - Search across 150+ icon collections (Lucide, Heroicons, Material Design, etc.)
+- **Auto-Learning** - Remembers which icon collections you use and prioritizes them in future searches
+- **Project Sync** - Icons are written directly to your `icons.tsx` file instead of pasting SVG into chat (saves tokens!)
+- **Batch Retrieval** - Get multiple icons at once
+- **Similar Icons** - Find the same icon across different collections and styles
+- **Recent Icons** - Quick access to icons you've used before
+- **Multi-Framework** - React, Vue, Svelte, Solid, and raw SVG exports
 
 ## Manual Installation
 
